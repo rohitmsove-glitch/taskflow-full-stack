@@ -1,0 +1,42 @@
+[
+  {
+    "id": "task-1001",
+    "title": "Build the portfolio landing page",
+    "description": "Create a responsive landing page and connect the Angular components.",
+    "status": "In Progress",
+    "priority": "High",
+    "dueDate": "2026-10-29",
+    "createdAt": "2026-10-19T09:30:00.000Z",
+    "updatedAt": "2026-10-20T11:00:00.000Z"
+  },
+  {
+    "id": "task-1002",
+    "title": "Review API documentation",
+    "description": "Check request and response examples for each REST endpoint.",
+    "status": "Todo",
+    "priority": "Medium",
+    "dueDate": "2026-10-30",
+    "createdAt": "2026-10-20T08:00:00.000Z",
+    "updatedAt": "2026-10-20T08:00:00.000Z"
+  },
+  {
+    "id": "task-1003",
+    "title": "Set up project repository",
+    "description": "Organize project folders and add the initial setup guide.",
+    "status": "Done",
+    "priority": "Low",
+    "dueDate": "2026-10-24",
+    "createdAt": "2026-10-17T10:00:00.000Z",
+    "updatedAt": "2026-10-21T13:15:00.000Z"
+  },
+  {
+    "id": "task-1004",
+    "title": "Implement analytics summary",
+    "description": "Calculate completion percentage and priority distribution.",
+    "status": "Todo",
+    "priority": "High",
+    "dueDate": "2026-11-03",
+    "createdAt": "2026-10-21T08:20:00.000Z",
+    "updatedAt": "2026-10-21T08:20:00.000Z"
+  }
+]

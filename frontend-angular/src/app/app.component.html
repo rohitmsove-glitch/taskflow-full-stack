@@ -1,0 +1,136 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="#top" aria-label="TaskFlow home">
+      <span class="brand-mark">t<span>.</span></span>
+      <span class="brand-name">taskflow</span>
+    </a>
+
+    <p class="nav-label">WORKSPACE</p>
+    <nav class="side-nav" aria-label="Main navigation">
+      <a class="nav-item active" href="#overview"><span class="nav-icon">▦</span> Overview</a>
+      <a class="nav-item" href="#tasks"><span class="nav-icon">☷</span> My tasks <span class="nav-count">{{ tasks.length }}</span></a>
+      <button class="nav-item nav-button" type="button" (click)="statusFilter = 'In Progress'"><span class="nav-icon">◷</span> In progress</button>
+      <button class="nav-item nav-button" type="button" (click)="statusFilter = 'Done'"><span class="nav-icon">✓</span> Completed</button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="mini-tip">
+        <div class="tip-spark">✳</div>
+        <p class="tip-title">Small steps add up.</p>
+        <p class="tip-copy">Keep your focus on the next thing, not everything.</p>
+      </div>
+      <div class="profile-row">
+        <div class="avatar">TF</div>
+        <div class="profile-copy"><strong>My workspace</strong><span>Personal account</span></div>
+        <span class="profile-menu">•••</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content" id="top">
+    <header class="topbar" id="overview">
+      <div>
+        <p class="breadcrumb">WORKSPACE <span>/</span> OVERVIEW</p>
+        <h1>Your work, in flow.</h1>
+        <p class="page-subtitle">A little progress every day goes a long way.</p>
+      </div>
+      <div class="topbar-right">
+        <span class="today-pill"><span class="online-dot"></span> Workspace active</span>
+        <button class="primary-button" type="button" (click)="openCreateForm()"><span class="button-plus">+</span> New task</button>
+      </div>
+    </header>
+
+    <section class="welcome-banner" aria-label="Workspace welcome">
+      <div class="welcome-copy">
+        <span class="banner-kicker">YOUR PERSONAL WORKSPACE</span>
+        <h2>Make space for<br><em>great work.</em></h2>
+        <p>Organize your priorities and turn plans into progress — one task at a time.</p>
+        <button class="banner-button" type="button" (click)="openCreateForm()">Plan your next step <span>↗</span></button>
+      </div>
+      <div class="banner-art" aria-hidden="true">
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+        <div class="art-card art-card-back"><span class="art-check">✓</span><div class="art-line long"></div><div class="art-line short"></div></div>
+        <div class="art-card art-card-main"><span class="art-card-label">TODAY'S FOCUS</span><div class="art-main-line"></div><div class="art-line long"></div><div class="art-line medium"></div><div class="art-progress"><span></span></div><div class="art-progress-label"><span>Progress</span><strong>{{ analytics?.completionRate ?? 0 }}%</strong></div></div>
+        <div class="art-spark spark-a">✳</div><div class="art-spark spark-b">✦</div><div class="art-circle"></div>
+      </div>
+    </section>
+
+    <section class="stats-grid" aria-label="Task summary">
+      <article class="stat-card">
+        <div class="stat-heading"><span class="stat-icon icon-violet">▦</span><span class="stat-trend">All time</span></div>
+        <p class="stat-label">Total tasks</p>
+        <div class="stat-value">{{ analytics?.totalTasks ?? tasks.length }}<span class="stat-unit"> tasks</span></div>
+        <div class="stat-foot"><span class="foot-dot violet-dot"></span> Everything on your plate</div>
+      </article>
+      <article class="stat-card">
+        <div class="stat-heading"><span class="stat-icon icon-amber">◷</span><span class="stat-trend">In motion</span></div>
+        <p class="stat-label">Open tasks</p>
+        <div class="stat-value">{{ analytics?.openTasks ?? tasks.length }}<span class="stat-unit"> tasks</span></div>
+        <div class="stat-foot"><span class="foot-dot amber-dot"></span> Ready for your focus</div>
+      </article>
+      <article class="stat-card">
+        <div class="stat-heading"><span class="stat-icon icon-green">✓</span><span class="stat-trend">Nice work</span></div>
+        <p class="stat-label">Completed</p>
+        <div class="stat-value">{{ analytics?.done ?? 0 }}<span class="stat-unit"> tasks</span></div>
+        <div class="stat-foot"><span class="foot-dot green-dot"></span> Progress worth celebrating</div>
+      </article>
+      <article class="stat-card progress-stat">
+        <div class="stat-heading"><span class="stat-icon icon-blue">↗</span><span class="stat-trend">Completion</span></div>
+        <p class="stat-label">Completion rate</p>
+        <div class="stat-value">{{ analytics?.completionRate ?? 0 }}<span class="stat-unit">%</span></div>
+        <div class="mini-progress"><span [style.width.%]="analytics?.completionRate ?? 0"></span></div>
+        <div class="stat-foot"><span class="foot-dot blue-dot"></span> Keep the momentum going</div>
+      </article>
+    </section>
+
+    <section class="tasks-panel" id="tasks">
+      <div class="section-heading">
+        <div>
+          <p class="section-eyebrow">STAY ON TRACK</p>
+          <h2>Your tasks <span class="heading-count">{{ filteredTasks.length }}</span></h2>
+          <p class="section-subtitle">The details that move your day forward.</p>
+        </div>
+        <button class="outline-button" type="button" (click)="openCreateForm()"><span>+</span> Add a task</button>
+      </div>
+
+      <div class="toolbar">
+        <label class="search-box"><span class="search-icon">⌕</span><input type="search" [(ngModel)]="searchTerm" name="search" placeholder="Search tasks..." aria-label="Search tasks"></label>
+        <label class="filter-wrap"><span class="filter-label">SHOW</span><select [(ngModel)]="statusFilter" name="statusFilter" aria-label="Filter by status"><option>All tasks</option><option>Todo</option><option>In Progress</option><option>Done</option></select><span class="select-chevron">⌄</span></label>
+        <span class="priority-summary"><span class="priority-indicator"></span>{{ highPriorityCount }} high priority</span>
+      </div>
+
+      <div *ngIf="notice" class="notice-message" role="status"><span>✓</span>{{ notice }}<button type="button" (click)="notice = ''" aria-label="Dismiss message">×</button></div>
+      <div *ngIf="errorMessage" class="error-message" role="alert">{{ errorMessage }} <button type="button" (click)="refresh()">Retry</button></div>
+
+      <section *ngIf="showForm" class="task-form-card" aria-label="Task editor">
+        <div class="form-heading"><div><p class="section-eyebrow">TASK DETAILS</p><h3>{{ editingId ? 'Edit task' : 'Create a new task' }}</h3></div><button class="icon-close" type="button" (click)="cancelForm()" aria-label="Close task form">×</button></div>
+        <form (ngSubmit)="saveTask()" #taskForm="ngForm">
+          <div class="form-field full-field"><label for="task-title">Task title <span>*</span></label><input id="task-title" name="title" [(ngModel)]="draft.title" required minlength="2" maxlength="120" placeholder="What needs to get done?" #titleInput="ngModel"><small class="field-error" *ngIf="titleInput.invalid && titleInput.touched">Enter a title with at least 2 characters.</small></div>
+          <div class="form-field full-field"><label for="task-description">Description</label><textarea id="task-description" name="description" [(ngModel)]="draft.description" maxlength="1000" rows="2" placeholder="Add a little context (optional)"></textarea></div>
+          <div class="form-row">
+            <div class="form-field"><label for="task-status">Status</label><select id="task-status" name="status" [(ngModel)]="draft.status"><option value="Todo">Todo</option><option value="In Progress">In Progress</option><option value="Done">Done</option></select></div>
+            <div class="form-field"><label for="task-priority">Priority</label><select id="task-priority" name="priority" [(ngModel)]="draft.priority"><option value="Low">Low</option><option value="Medium">Medium</option><option value="High">High</option></select></div>
+            <div class="form-field"><label for="task-due">Due date</label><input id="task-due" name="dueDate" type="date" [(ngModel)]="draft.dueDate"></div>
+          </div>
+          <div class="form-actions"><button class="text-button" type="button" (click)="cancelForm()">Cancel</button><button class="primary-button" type="submit" [disabled]="taskForm.invalid">{{ editingId ? 'Save changes' : 'Create task' }} <span>→</span></button></div>
+        </form>
+      </section>
+
+      <div *ngIf="loading" class="loading-state"><span class="loading-spinner"></span><p>Getting your workspace ready…</p></div>
+      <div *ngIf="!loading && filteredTasks.length === 0" class="empty-state"><div class="empty-icon">✳</div><h3>{{ searchTerm || statusFilter !== 'All tasks' ? 'No tasks match this view' : 'A fresh start.' }}</h3><p>{{ searchTerm || statusFilter !== 'All tasks' ? 'Try another search or switch the status filter.' : 'Add your first task and give your day a little direction.' }}</p><button class="primary-button" type="button" (click)="openCreateForm()">+ Create a task</button></div>
+
+      <div *ngIf="!loading && filteredTasks.length > 0" class="task-grid">
+        <article class="task-card" *ngFor="let task of filteredTasks">
+          <div class="task-card-top"><span class="task-status" [ngClass]="statusClass(task.status)"><span class="status-dot"></span>{{ task.status }}</span><button class="more-button" type="button" (click)="editTask(task)" aria-label="Edit task">•••</button></div>
+          <h3>{{ task.title }}</h3>
+          <p class="task-description">{{ task.description || 'No description added yet.' }}</p>
+          <div class="task-meta"><span class="priority-tag" [ngClass]="priorityClass(task.priority)"><span class="priority-mini-dot"></span>{{ task.priority }} priority</span><span *ngIf="task.dueDate" class="due-date" [class.overdue]="isOverdue(task)">{{ isOverdue(task) ? 'Overdue · ' : 'Due ' }}{{ task.dueDate | date:'MMM d' }}</span></div>
+          <div class="task-card-footer"><span class="updated-label">Updated {{ task.updatedAt | date:'MMM d' }}</span><div class="task-actions"><button class="small-action" type="button" (click)="editTask(task)">Edit</button><button *ngIf="task.status !== 'Done'" class="complete-action" type="button" (click)="markDone(task)" aria-label="Mark task complete">✓</button><span *ngIf="task.status === 'Done'" class="complete-badge" aria-label="Completed">✓</span><button class="delete-action" type="button" (click)="deleteTask(task)" aria-label="Delete task">×</button></div></div>
+        </article>
+      </div>
+
+      <footer class="panel-footer"><span>Made for focused work <span class="footer-heart">♥</span></span><span><span class="footer-live-dot"></span> Synced with your workspace</span></footer>
+    </section>
+  </main>
+</div>
